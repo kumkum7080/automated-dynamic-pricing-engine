@@ -1,5 +1,3 @@
-# automated-dynamic-pricing-engine
-An enterprise grade data engineering and predictive pricing pipeline using MySQL, Scikit-Learn machine learning, and an interactive Streamlit operational dashboard.
 # Enterprise Automated Dynamic Pricing Engine
 
 A production-ready data product that combines a real-time relational analytics backend with an inline machine learning prediction system to dynamically calculate pricing elasticity and financial curves.
