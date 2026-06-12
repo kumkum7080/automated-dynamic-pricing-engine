@@ -1,10 +1,10 @@
-# 🚀 AuraPrice | Enterprise Dynamic Pricing SaaS Engine
+#  AuraPrice | Enterprise Dynamic Pricing SaaS Engine
 
 AuraPrice is a professional, production-ready corporate SaaS application that combines a real-time relational analytics backend with embedded machine learning demand prediction models. It features a modern light-mode marketing landing page, a live price elasticity simulator, and an authorized merchant dashboard.
 
 ---
 
-## 🌟 Core Features
+##  Core Features
 
 * **Public Interactive Elasticity Calculator**: Public guests can select catalog items and drag a price slider to see simulated sales quantities, gross revenues, and net profits. It draws **live Chart.js curves** of the demand and profit frontiers.
 * **Role-Based JWT Authentication**: Secure merchant sign-up and login with custom `bcrypt` hashing (no `passlib` mixin dependencies) and HTTP-only JWT token authentication.
@@ -15,7 +15,7 @@ AuraPrice is a professional, production-ready corporate SaaS application that co
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 * **Backend Framework**: Python 3.12+ with [FastAPI](https://fastapi.tiangolo.com/) for lightweight high-performance API endpoints and static page routing.
 * **Database & Pools**: [MySQL](https://www.mysql.com/) database using raw, thread-safe connection pooling built with direct [PyMySQL](https://github.com/PyMySQL/PyMySQL) (intentionally built **without SQLAlchemy ORM** to avoid overhead).
@@ -24,7 +24,7 @@ AuraPrice is a professional, production-ready corporate SaaS application that co
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```tree
 ├── backend/
@@ -50,7 +50,7 @@ AuraPrice is a professional, production-ready corporate SaaS application that co
 
 ---
 
-## 📊 Database Schema
+##  Database Schema
 
 * **`users`**: Manages authorized logins, role credentials (`Admin` or `Manager`), and password hashes.
 * **`products`**: Catalog details, cost price margins, active sale prices, and stock inventory levels.
@@ -60,7 +60,7 @@ AuraPrice is a professional, production-ready corporate SaaS application that co
 
 ---
 
-## 🚀 Local Installation & Setup
+##  Local Installation & Setup
 
 ### 1. Prerequisite Checklist
 * Make sure you have **MySQL Server** installed and running on `localhost:3306`.
