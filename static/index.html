@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraPrice | Enterprise Dynamic Pricing Engine</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=6">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Moving stock market background illusion -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="/" class="logo">🚀 Aura<span>Price</span></a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li class="auth-only" style="display:none;"><a href="/dashboard">Control Board</a></li>
+      <li class="auth-only" style="display:none;"><a href="/history">Audit History</a></li>
+    </ul>
+    <div class="nav-auth">
+      <button class="btn btn-secondary guest-only" onclick="openAuthModal('login')">Log In</button>
+      <button class="btn btn-primary guest-only" onclick="openAuthModal('register')">Get Started</button>
+      <span class="user-greeting auth-only" style="display:none; margin-right:1rem; font-weight:600;">Welcome, <span id="username-display">User</span></span>
+      <button class="btn btn-secondary auth-only" style="display:none;" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="badge">Next-Gen Revenue Optimization</div>
+    <h1>Maximize Profits with <span>Dynamic Price Elasticity</span></h1>
+    <p>AuraPrice uses real-time market inputs, competitor pricing fluctuations, and direct warehouse stock status to instantly calculate optimal pricing frontiers via embedded machine learning algorithms.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="scrollToSimulator()">Try Live Simulator</button>
+      <button class="btn btn-secondary auth-only-redirect" onclick="openAuthModal('login')">Access Merchant Board</button>
+    </div>
+  </section>
+
+  <!-- Value Simulator section -->
+  <h2 class="section-title" id="simulator-title">Interactive <span>Elasticity Calculator</span></h2>
+  <section class="simulator-container" id="simulator-section">
+    <div class="simulator-inputs">
+      <h3>Simulate Revenue Frontiers</h3>
+      <p style="color:var(--color-text-muted); margin-bottom:1rem;">Select a mock product from our catalog to adjust price points. See how our embedded Scikit-Learn regression model dynamically forecasts demand curves based on price elasticities.</p>
+      
+      <div class="sim-input-group">
+        <label for="sim-product-select" style="font-weight:600;">Choose Product</label>
+        <select id="sim-product-select" class="product-selector" style="width:100%; padding:0.75rem;" onchange="loadSimulatorProduct()">
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+
+      <div class="sim-input-group">
+        <div class="sim-label-row">
+          <span>Target Price Point</span>
+          <span id="price-slider-value">$0.00</span>
+        </div>
+        <input type="range" id="price-slider" class="sim-slider" min="10" max="300" step="0.01" oninput="runSimulation()">
+        <div class="sim-label-row" style="font-size:0.8rem; color:var(--color-text-muted); margin-top:0.25rem;">
+          <span id="price-min-label">$0.00</span>
+          <span id="price-max-label">$0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="simulator-outputs">
+      <div class="out-metric">
+        <span class="label">Forecasted Monthly Units Sold</span>
+        <span class="val" id="sim-units">--</span>
+      </div>
+      <div class="out-metric">
+        <span class="label">Projected Gross Revenue</span>
+        <span class="val" id="sim-revenue">--</span>
+      </div>
+      <div class="out-metric profit">
+        <span class="label">Estimated Net Profit</span>
+        <span class="val" id="sim-profit">--</span>
+      </div>
+    </div>
+    
+    <!-- Interactive Curve Chart -->
+    <div class="simulator-chart-wrapper" style="grid-column: 1 / -1; margin-top: 1.5rem; width: 100%; height: 320px; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+      <canvas id="simulator-chart"></canvas>
+    </div>
+  </section>
+
+  <!-- Auth Modal -->
+  <div class="auth-overlay" id="auth-overlay">
+    <div class="auth-card">
+      <button class="close-auth" onclick="closeAuthModal()">&times;</button>
+      
+      <!-- Login Form -->
+      <div id="login-form-wrapper">
+        <h2>Welcome Back</h2>
+        <p>Enter your credentials to access your merchant console.</p>
+        <form onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" class="form-control" placeholder="Enter username" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-control" placeholder="Enter password" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Access Dashboard</button>
+        </form>
+        <div class="form-footer">
+          Don't have an account? <a href="#" onclick="switchAuthMode('register')">Register Now</a>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="register-form-wrapper" style="display:none;">
+        <h2>Create Merchant Account</h2>
+        <p>Register as a manager or administrator to adjust pricing curves.</p>
+        <form onsubmit="handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" class="form-control" placeholder="Choose a username" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" class="form-control" placeholder="Minimum 6 characters" required>
+          </div>
+          <div class="form-group">
+            <label for="register-role">Authorized Role</label>
+            <select id="register-role" class="form-control">
+              <option value="Manager">Pricing Analyst / Manager</option>
+              <option value="Admin">System Administrator</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Register Account</button>
+        </form>
+        <div class="form-footer">
+          Already registered? <a href="#" onclick="switchAuthMode('login')">Log In</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast" id="toast-notify">
+    <span id="toast-message">Success!</span>
+  </div>
+
+  <footer style="text-align:center; padding:3rem; margin-top:4rem; border-top:1px solid var(--border-color); color:var(--color-text-muted); font-size:0.9rem;">
+    &copy; 2026 AuraPrice Technologies Inc. All rights reserved. Powered by machine learning demand models.
+  </footer>
+
+  <script src="/static/js/app.js?v=6"></script>
+</body>
+</html>

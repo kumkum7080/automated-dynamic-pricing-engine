@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Trails | AuraPrice History</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=6">
+</head>
+<body class="history-page">
+  <!-- Moving stock market background illusion -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="/" class="logo">🚀 Aura<span>Price</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard">Control Board</a></li>
+      <li><a href="/history" class="active">Audit History</a></li>
+    </ul>
+    <div class="nav-auth">
+      <span class="user-greeting" style="margin-right:1rem; font-weight:600;">Welcome, <span id="username-display">User</span></span>
+      <button class="btn btn-secondary" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Title Section -->
+  <header style="padding:4rem 5% 2rem; max-width:1400px; margin:0 auto;">
+    <h2 style="font-size:2.2rem; margin-bottom:0.5rem;">Pricing Audit Logs</h2>
+    <p style="color:var(--color-text-muted);">Historical logs of price changes, manual overlays, and applied optimization algorithms.</p>
+  </header>
+
+  <!-- Logs Table -->
+  <section class="control-board-section">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Log ID</th>
+            <th>Product Name</th>
+            <th>Original Price</th>
+            <th>Optimized Price</th>
+            <th>Strategy Applied</th>
+            <th>User Account</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="history-table-body">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Toast notifications -->
+  <div class="toast" id="toast-notify">
+    <span id="toast-message">Success!</span>
+  </div>
+
+  <footer style="text-align:center; padding:3rem; margin-top:4rem; border-top:1px solid var(--border-color); color:var(--color-text-muted); font-size:0.9rem;">
+    &copy; 2026 AuraPrice Technologies Inc. All rights reserved. Powered by machine learning demand models.
+  </footer>
+
+  <script src="/static/js/app.js?v=6"></script>
+</body>
+</html>

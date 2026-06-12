@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Board | AuraPrice Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=6">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-page">
+  <!-- Moving stock market background illusion -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="/" class="logo">🚀 Aura<span>Price</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard" class="active">Control Board</a></li>
+      <li><a href="/history">Audit History</a></li>
+    </ul>
+    <div class="nav-auth">
+      <span class="user-greeting" style="margin-right:1rem; font-weight:600;">Welcome, <span id="username-display">User</span></span>
+      <button class="btn btn-secondary" onclick="handleLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Dashboard Grid -->
+  <main class="dashboard-grid">
+    <div class="dashboard-hero">
+      <div>
+        <h2>Operational Control Board</h2>
+        <p style="color:var(--color-text-muted);">Monitor price elasticity indices, review automated warnings, and apply machine learning recommendations.</p>
+      </div>
+      <button class="btn btn-primary" onclick="loadDashboardData()">🔄 Refresh Board</button>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <span class="label">Managed Products</span>
+        <span class="value" id="stat-total">--</span>
+      </div>
+      <div class="stat-card" style="border-left:3px solid var(--accent-warning);">
+        <span class="label">🚨 Critical Low Stock</span>
+        <span class="value" id="stat-low-stock">--</span>
+      </div>
+      <div class="stat-card" style="border-left:3px solid var(--accent-primary);">
+        <span class="label">📦 Overstocked Items</span>
+        <span class="value" id="stat-overstock">--</span>
+      </div>
+      <div class="stat-card" style="border-left:3px solid var(--accent-secondary);">
+        <span class="label">✨ Optimal Updates Available</span>
+        <span class="value" id="stat-optimizations">--</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Product Management Table -->
+  <section class="control-board-section">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Stock Status</th>
+            <th>Wholesale Cost</th>
+            <th>Active Price</th>
+            <th>Aura Optimized Price</th>
+            <th>Heuristic Strategy</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="dashboard-table-body">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+  
+  <!-- Master Pricing comparison chart -->
+  <section class="control-board-section" style="margin-top: 1rem; margin-bottom: 3rem;">
+    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Market Analytics & Catalog Pricing Frontier</h3>
+    <p style="color:var(--color-text-muted); margin-bottom: 1.5rem;">Visual comparison across your entire inventory: comparing wholesale base costs, active selling prices, and Aura's machine learning optimized recommendation values.</p>
+    <div class="table-container" style="padding: 2.5rem; min-height: 420px;">
+      <div style="position: relative; width: 100%; height: 370px;">
+        <canvas id="dashboard-master-chart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulation & Deep Dive Modal -->
+  <div class="auth-overlay" id="sim-modal-overlay">
+    <div class="auth-card sim-modal">
+      <button class="close-auth" onclick="closeSimModal()">&times;</button>
+      
+      <div class="sim-modal-header">
+        <h2 id="sim-modal-title">Product Elasticity Deep-Dive</h2>
+      </div>
+      
+      <div class="sim-grid-layout">
+        <!-- Simulator controls -->
+        <div class="simulator-inputs" style="padding:0; border:none; background:transparent;">
+          <h4>ML Price Point Optimization</h4>
+          <p style="color:var(--color-text-muted); font-size:0.85rem;">Slide to adjust the active price and observe the predicted volume demand curve simulated by AuraPrice.</p>
+          
+          <div class="sim-input-group">
+            <div class="sim-label-row">
+              <span>Simulation Price</span>
+              <span id="modal-slider-value" style="color:var(--accent-secondary); font-weight:700;">$0.00</span>
+            </div>
+            <input type="range" id="modal-price-slider" class="sim-slider" min="10" max="300" step="0.01" oninput="runModalSimulation()">
+            <div class="sim-label-row" style="font-size:0.75rem; color:var(--color-text-muted);">
+              <span id="modal-min-label">$0.00</span>
+              <span id="modal-max-label">$0.00</span>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem; display:flex; flex-direction:column; gap:0.5rem;">
+            <button class="btn btn-primary" id="btn-apply-modal-price" onclick="applyModalPrice()">Apply Selected Price</button>
+            <button class="btn btn-secondary" onclick="closeSimModal()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Simulator outputs -->
+        <div class="simulator-outputs" style="padding:1.5rem; background:var(--bg-primary);">
+          <div class="out-metric" style="gap:0;">
+            <span class="label" style="font-size:0.75rem;">Forecasted Units Sold</span>
+            <span class="val" id="modal-units" style="font-size:1.8rem;">--</span>
+          </div>
+          <div class="out-metric" style="gap:0;">
+            <span class="label" style="font-size:0.75rem;">Gross Revenue</span>
+            <span class="val" id="modal-revenue" style="font-size:1.8rem;">--</span>
+          </div>
+          <div class="out-metric profit" style="gap:0;">
+            <span class="label" style="font-size:0.75rem;">Estimated Net Profit</span>
+            <span class="val" id="modal-profit" style="font-size:1.8rem;">--</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast" id="toast-notify">
+    <span id="toast-message">Success!</span>
+  </div>
+
+  <footer style="text-align:center; padding:3rem; margin-top:4rem; border-top:1px solid var(--border-color); color:var(--color-text-muted); font-size:0.9rem;">
+    &copy; 2026 AuraPrice Technologies Inc. All rights reserved. Powered by machine learning demand models.
+  </footer>
+
+  <script src="/static/js/app.js?v=6"></script>
+</body>
+</html>

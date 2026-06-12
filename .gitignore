@@ -1,0 +1,14 @@
+# Environment variables
+.env
+
+# Python caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
